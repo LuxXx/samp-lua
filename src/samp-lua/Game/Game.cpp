@@ -11,5 +11,5 @@ void initGame() {
 		while (GetModuleHandleA("samp.dll") == NULL)
 			Sleep(50);
 	}
-
+	while (true) { Sleep(100); }
 }

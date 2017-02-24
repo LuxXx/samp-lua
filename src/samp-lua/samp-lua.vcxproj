@@ -144,10 +144,14 @@
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Game\Game.cpp" />
+    <ClCompile Include="Utils\Pattern.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dllmain.hpp" />
     <ClInclude Include="Game\Game.hpp" />
+    <ClInclude Include="Game\SAMP\PatternTable.hpp" />
+    <ClInclude Include="Utils\Hook.h" />
+    <ClInclude Include="Utils\Pattern.hpp" />
     <ClInclude Include="Utils\Windows.hpp" />
   </ItemGroup>
   <ItemGroup>

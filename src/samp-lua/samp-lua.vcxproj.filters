@@ -21,6 +21,9 @@
     <ClCompile Include="Game\Game.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Utils\Pattern.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils\Windows.hpp">
@@ -30,6 +33,15 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Game\Game.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Pattern.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SAMP\PatternTable.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Hook.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
