@@ -1,8 +1,12 @@
 #include "Game.hpp"
 #include "../../../sol2/sol.hpp"
 #include "../Utils/Windows.hpp"
+#include "../Utils/Module.hpp"
 
 sol::state lua;
+
+DWORD g_dwModuleLength = 0;
+DWORD g_dwModuleBase = 0;
 
 void initGame() {
 
@@ -11,6 +15,12 @@ void initGame() {
 		while (GetModuleHandleA("samp.dll") == NULL)
 			Sleep(50);
 	}
+
+	g_dwModuleBase = Utils::Module::moduleBase("samp.dll");
+	g_dwModuleLength = Utils::Module::moduleLength((HMODULE)g_dwModuleBase);
+
+	if (g_dwModuleBase == 0 || g_dwModuleLength == 0)
+		throw std::exception("Error while initializing SA:MP");
 
 	initLua();
 
