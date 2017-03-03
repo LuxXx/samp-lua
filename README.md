@@ -38,8 +38,8 @@ end
 You can also call the SA:MP functions inside lua:
 
 ```lua
-function onAddChatMessage(text)
-    print(text) -- I repeat every message
+function onAddChatMessage(text, prefix)
+    print(prefix .. text) -- I repeat every message
     return false
 end
 ```
@@ -128,7 +128,7 @@ The lua script can be reloaded during the game with `/reloadlua`.
 
 | Events | Comment | Written |
 | ------------- |-------------| -----:|
-| onSendChat | handles your chat and your commands | Yes |
+| onSendChat | handles your chat and your commands, has two parameters: text and prefix | Yes |
 | onAddChatMessage | handles the incoming chat messages | Yes |
 | onShowGameText |  | Not yet |
 | onShowDialog |  | Not yet |
