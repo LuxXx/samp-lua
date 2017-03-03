@@ -34,6 +34,12 @@ namespace Game
 				static const char *useMask = "xx????x????xx????xxxxx";
 			}
 
+			namespace FullAddChatMessage
+			{
+				static const BYTE *byteMask = (const BYTE *)"\x55\x56\x8B\xE9\x57\x8D\xBD\x00\x00\x00\x00\x8D\xB5\x00\x00\x00\x00\xB9\x00\x00\x00\x00";
+				static const char *useMask = "xxxxxxx????xx????x????";
+			}
+
 			namespace GetPlayerNameByID
 			{
 				// X86 ASM-Code
