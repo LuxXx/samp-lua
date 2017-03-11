@@ -45,6 +45,7 @@ void initLua() {
 
 	hookAddChatMessage();
 	hookSendChatCommand();
+	hookSendChat();
 }
 
 DWORD *g_dwChat = 0;
@@ -148,6 +149,37 @@ void hookSendChatCommand() {
 
 }
 
+Utils::Hook::Hook<Utils::Hook::CallConvention::stdcall_t, bool, const char *> g_sendChat;
+
 void hookSendChat() {
 
+	static auto addr = Utils::Pattern::findPattern(
+		g_dwModuleBase,
+		g_dwModuleLength,
+		Game::SAMP::PatternTable::SendChat::Chat::byteMask,
+		Game::SAMP::PatternTable::SendChat::Chat::useMask
+		);
+	auto sendChat_det = [](const char *msg) {
+
+		sol::protected_function onSendChat = lua["onSendChat"];
+		onSendChat.error_handler = lua["handler"];
+
+		sol::protected_function_result result = onSendChat(msg);
+		if (result.valid()) {
+			if (result) {
+				return false;
+			}
+
+			return g_sendChat.callOrig(msg);
+		}
+		else {
+			sol::error err = result;
+			std::string what = err.what();
+			oAddChatMessage(g_dwChat, 8, what.c_str(), std::string("LuxLua-Engine").c_str(), 0xB746464, 0xB30000);
+			return false;
+		}
+	};
+
+	g_sendChat.apply(addr, sendChat_det);
+	lua.set_function("sendChat", [](std::string s) { return g_sendChat.callOrig(s.c_str()); });
 }
