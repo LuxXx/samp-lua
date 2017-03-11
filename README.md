@@ -15,7 +15,7 @@ http://sol2.readthedocs.io/en/latest/
 A big thank you goes to [agrippa1994](https://github.com/agrippa1994) for his Utility functionality:
 https://github.com/SAMPProjects/Open-SAMP-API
 
-# WIP (Core functionality already written but not uploaded yet): The Lua Engine
+# WIP: The Lua Engine
 What is Lua? Lua is a scripting language, that is designed for being embedded into other application.
 You can add a `events.lua` file to your SA:MP directory. The Lua engine emits events when SA:MP functions are called
 For example if you call the function SendChat by using your Keybinder or by yourself the engine emits the "onSendChat" event.
