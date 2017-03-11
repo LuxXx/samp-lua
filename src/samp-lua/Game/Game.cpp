@@ -44,7 +44,7 @@ void initLua() {
 	events_lua();
 
 	hookAddChatMessage();
-
+	hookSendChatCommand();
 }
 
 DWORD *g_dwChat = 0;
@@ -97,7 +97,54 @@ void hookAddChatMessage() {
 
 }
 
+Utils::Hook::Hook<Utils::Hook::CallConvention::stdcall_t, bool, const char *> g_sendChatCommand;
+
 void hookSendChatCommand() {
+	static auto addr = Utils::Pattern::findPattern(
+		g_dwModuleBase,
+		g_dwModuleLength,
+		Game::SAMP::PatternTable::SendChat::Command::byteMask,
+		Game::SAMP::PatternTable::SendChat::Command::useMask
+	);
+
+	auto sendChatCommand_det = [](const char *msg) {
+
+		if (std::string(msg) == "/reloadlua") {
+			sol::load_result events_lua = lua.load_file("events.lua");
+
+			if (events_lua.valid()) {
+				events_lua();
+				oAddChatMessage(g_dwChat, 8, "events.lua reloaded", std::string("LuxLua-Engine").c_str(), 0xB746464, 0xB30000);
+				return false;
+			}
+			else {
+				g_sendChatCommand.remove();
+				oAddChatMessage(g_dwChat, 8, "Error reloading events.lua - Hook got removed", std::string("LuxLua-Engine").c_str(), 0xB746464, 0xB30000);
+				return false;
+			}
+		}
+
+		sol::protected_function onSendChat = lua["onSendChat"];
+		onSendChat.error_handler = lua["handler"];
+
+		sol::protected_function_result result = onSendChat(msg);
+		if (result.valid()) {
+			if (result) {
+				return false;
+			}
+
+			return g_sendChatCommand.callOrig(msg);
+		}
+		else {
+			sol::error err = result;
+			std::string what = err.what();
+			oAddChatMessage(g_dwChat, 8, what.c_str(), std::string("LuxLua-Engine").c_str(), 0xB746464, 0xB30000);
+			return false;
+		}
+	};
+
+	g_sendChatCommand.apply(addr, sendChatCommand_det);
+	lua.set_function("sendCommand", [](std::string s) { return g_sendChatCommand.callOrig(s.c_str()); });
 
 }
 
