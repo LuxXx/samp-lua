@@ -120,6 +120,33 @@ function onAddChatMessage(text)
 	end
 end
 ```
+A /repay method
+
+```lua
+lastPayer = ''
+lastPayment = 0
+function onSendChat(msg)
+	if (msg == "/repay") then
+		if (lastPayer == 0 or lastPayer == '') then
+			print("Nothing to pay")
+		else
+			sendCommand("/pay "..lastPayer.." "..lastPayment)
+		end
+		return true
+	end
+end
+
+function onAddChatMessage(text, prefix)
+	print("onAddChatMessage")
+	if (string.match(text, "payed you")) then
+		lastPayer, lastPayment = string.match(text, "(.*) payed you $(.*)!")
+	end
+end
+```
+
+
+
+
 You may also use the default lua libraries like io, math, os, etc.
 
 I want to implement as much events as possible. If you have suggestions, feel free to use the issue tracker.
@@ -156,7 +183,7 @@ The lua script can be reloaded during the game with `/reloadlua`.
 | addChatMessage | alias: print, shows a client message | Yes |
 | full_print | The full version of the print function. Call it like this: full_print(text, chattype, prefix, color, prefixColor). | Yes |
 
-SA:MP uses several ChatTypes that you can invoke using ``:
+SA:MP uses several ChatTypes that you can invoke using `full_print`:
 - 2 for normal chat
 - 4 for info messages (blue font color)
 - 8 for debug messages (green font color)
