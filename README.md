@@ -137,7 +137,6 @@ function onSendChat(msg)
 end
 
 function onAddChatMessage(text, prefix)
-	print("onAddChatMessage")
 	if (string.match(text, "payed you")) then
 		lastPayer, lastPayment = string.match(text, "(.*) payed you $(.*)!")
 	end
@@ -182,7 +181,8 @@ The lua script can be reloaded during the game with `/reloadlua`.
 | sendCommand | sends a command | Yes |
 | addChatMessage | alias: print, shows a client message | Yes |
 | full_print | The full version of the print function. Call it like this: full_print(text, chattype, prefix, color, prefixColor). | Yes |
-
+| getHP | gets the current hp | No |
+| ... | | |
 SA:MP uses several ChatTypes that you can invoke using `full_print`:
 - 2 for normal chat
 - 4 for info messages (blue font color)
